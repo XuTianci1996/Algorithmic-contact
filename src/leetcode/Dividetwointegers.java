@@ -3,35 +3,43 @@ package leetcode;
 public class Dividetwointegers {
 
 	public static void main(String[] args) {
-		System.out.println(divide(-213213213, -1));
+		//System.out.println(Integer.MAX_VALUE);
+		System.out.println(divide(-2147483648,-1));
 	}
 
 	public static int divide(int dividend, int divisor) {
-        if(dividend>0 && divisor>0){
-            int count = 0;
-            while(dividend>=divisor){
-                dividend -= divisor;
-                count++;
-            }
-            return count;
-        }else if(dividend<0 && divisor<0){
-            int count = 0;
-             while(dividend<=divisor){
-                dividend -= divisor;
-                count++;
-            }
-            return count;
-        }else if((dividend>0 && divisor<0)||(dividend<0 && divisor>0)){
-            int count = 0;
-            dividend = Math.abs(dividend);
-            divisor = Math.abs(divisor);
-             while(dividend>=divisor){
-                dividend -= divisor;
-                count++;
-            }
-            return -count;
-        }else{
-            return 0;  
+        if(divisor==0) return Integer.MAX_VALUE;
+        if(dividend==Integer.MIN_VALUE){
+        	if(divisor==-1){
+        		System.out.println(dividend);
+        		return Integer.MAX_VALUE;
+        	}
         }
+        if(divisor==1){
+        	return dividend;
+        }
+        long dd = (long)dividend;
+        long ds = (long)divisor;
+		int result = 0;
+        boolean flag = true;
+        if(dd<0){
+        	dd=-dd;
+        	flag = !flag;
+        }
+        if(ds<0){
+        	ds = -ds;
+        	flag = !flag;
+        }
+        
+        while(dd>=ds){
+        	int shift=0;
+        	while(dd>=(ds<<shift)){
+        		shift++;
+        	}
+        	result += 1<<(shift-1);
+        	dd-=ds<<(shift-1);
+        }
+        
+		return flag?result:-result;
     }
 }
